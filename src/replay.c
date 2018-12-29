@@ -7,6 +7,8 @@ char string_buffer[2048];
 int parse_replay(FILE *file, struct replay_meta *meta, struct replay_data *data)
 {
 	if (!file || !meta) {
+		debug("got a null pointer");
+
 		return 1;
 	}
 
@@ -33,6 +35,8 @@ int parse_replay(FILE *file, struct replay_meta *meta, struct replay_data *data)
 
 	/* Replay data parsing is optional */
 	if (!data) {
+		debug("skipping data parsing");
+
 		return 0;
 	}
 
@@ -40,12 +44,15 @@ int parse_replay(FILE *file, struct replay_meta *meta, struct replay_data *data)
 	BYTE *comp = malloc(comp_len);
 
 	if (!comp) {
+		debug("failed allocating %d bytes for compressed data",
+			comp_len);
+
 		return 2;
 	}
 
 	for (int32_t i = 0, c; i < comp_len; i++) {
 		if ((c = fgetc(file)) == EOF) {
-			printf("reached EOF early, bailing out (%d)\n", i);
+			debug("reached EOF early, bailing out (%d)\n", i);
 
 			break;
 		}
@@ -57,7 +64,7 @@ int parse_replay(FILE *file, struct replay_meta *meta, struct replay_data *data)
 	size_t decomp_len = 0;
 
 	if (decompress_basic(comp, comp_len, &data->raw, &data->raw_len)) {
-		printf("decompression failed\n");
+		debug("decompression failed\n");
 
 		return 1;
 	}
@@ -76,6 +83,8 @@ static void assign_string(char **dest)
 	}
 
 	if (!(*dest = malloc(string_len))) {
+		debug("falied allocating %d bytes for string", string_len);
+
 		return;
 	}
 

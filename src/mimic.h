@@ -6,6 +6,20 @@
 #include <string.h>
 #include <inttypes.h>
 
+#ifdef DEBUG
+
+  #define debug(...)\
+      printf("[debug] [%s:%s] ", __FILE__, __func__);\
+      printf(__VA_ARGS__);\
+      putchar('\n');\
+
+#else
+
+  #define debug(...)\
+      ;\
+
+#endif /* DEBUG */
+
 typedef unsigned char BYTE;
 
 struct replay_meta {

@@ -48,14 +48,12 @@ size_t read_osu_string(char *out_buffer)
 	sread(&indicator, sizeof(BYTE), 1);
 
 	if (indicator != 0x0b) {
-		printf("string indicator set to invalid value\n");
+		debug("string indicator set to invalid value\n");
 
 		return 0;
 	}
 
 	uint64_t len = read_uleb128();
-
-	printf("  len: %d\n", (int)len);
 
 	for (size_t i = 0; i < len; i++) {
 		sread(out_buffer++, sizeof(char), 1);
