@@ -36,9 +36,13 @@ struct replay_meta {
 	int64_t timestamp;
 };
 
-struct replay_data {
-	size_t raw_len;
-	BYTE *raw;
+struct replay_action {
+	int64_t offset;
+	float x_coord;
+	float y_coord;
+	int32_t keys;
+
+	int64_t time;	
 };
 
 void set_stream(FILE *new_stream);
@@ -54,6 +58,6 @@ int decompress_basic(BYTE *in_data, size_t in_len, BYTE **out_data,
 	size_t *out_len);
 
 int parse_replay(FILE *file, struct replay_meta *meta,
-	struct replay_data *data);
+	struct replay_action **actions, size_t *actions_len);
 
 #endif /* MIMIC_H */
