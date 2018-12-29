@@ -17,7 +17,7 @@ int64_t read_int64();
 
 size_t read_osu_string(char *out_buffer);
 
-int basic_decompress(BYTE *in_data, size_t in_len, BYTE **out_data,
+int decompress_basic(BYTE *in_data, size_t in_len, BYTE **out_data,
 	size_t *out_len);
 
 #endif /* MIMIC_H */

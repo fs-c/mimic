@@ -1,3 +1,7 @@
+/* Most of the code in this file was taken with minimal modifications from
+ * https://github.com/lloyd/easylzma/blob/master/test/simple.c
+ */
+
 #include "mimic.h"
 #include "easylzma/decompress.h"
 
@@ -13,7 +17,7 @@ struct data_stream
     size_t out_len;
 };
 
-int basic_decompress(BYTE *in_data, size_t in_len, BYTE **out_data,
+int decompress_basic(BYTE *in_data, size_t in_len, BYTE **out_data,
 	size_t *out_len)
 {
     int rc;
