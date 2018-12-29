@@ -3,7 +3,7 @@
 #define sread(dest, size, count)					\
 	rd = fread(dest, size, count, stream);				\
 	if (rd != count)						\
-		printf("fread failed (%d, %d)\n", (int)rd, (int)count);	\
+		debug("fread failed (%d, %d)", (int)rd, (int)count);	\
 
 #define type_read(type)			\
 	type val;			\
@@ -48,7 +48,7 @@ size_t read_osu_string(char *out_buffer)
 	sread(&indicator, sizeof(BYTE), 1);
 
 	if (indicator != 0x0b) {
-		debug("string indicator set to invalid value\n");
+		debug("string indicator set to invalid value");
 
 		return 0;
 	}
