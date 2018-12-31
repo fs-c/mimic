@@ -1,1 +1,1 @@
-gcc -DDEBUG -Wall -Wextra -std="c99" -Wno-format src/*.c -leasylzma_s -o mimic.out
+gcc -DDEBUG -Wall -Wextra -Wno-format src/*.c -leasylzma_s -o mimic.out
