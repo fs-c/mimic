@@ -1,5 +1,10 @@
 #include "mimic.h"
 
+#define sfree(pointer)					\
+	if (pointer)					\
+		free(pointer);				\
+	else debug("tried freeing null pointer");	\
+
 struct replay_raw {
 	BYTE *data;
 	size_t data_len;
@@ -39,7 +44,7 @@ int parse_replay(FILE *file, struct replay_meta *meta,
 	meta->max_combo = read_int16();
 	meta->perfect = read_byte();
 	meta->mods_used = read_int32();
-	
+
 	assign_string(&meta->life_bar);
 
 	meta->timestamp = read_int64();
@@ -66,9 +71,15 @@ int parse_replay(FILE *file, struct replay_meta *meta,
 
 	struct replay_raw raw = { 0 };
 
-	if (decompress_basic(comp, comp_len, &raw.data, &raw.data_len)) {
-		debug("decompression failed");
+	int decomp_fail = decompress_basic(comp, comp_len, &raw.data,
+		&raw.data_len);
+	
+	/* Free this stuff ASAP */
+	free(comp);
 
+	if (decomp_fail) {
+		debug("decompression failed");
+		
 		return 1;
 	}
 
@@ -82,6 +93,14 @@ int parse_replay(FILE *file, struct replay_meta *meta,
 	}
 
 	return 0;
+}
+
+void free_replay_meta(struct replay_meta *meta)
+{
+	sfree(meta->beatmap_hash);
+	sfree(meta->player_name);
+	sfree(meta->replay_hash);
+	sfree(meta->life_bar);		
 }
 
 static void assign_string(char **dest)
@@ -152,7 +171,7 @@ static int parse_action(char *segment, struct replay_action *out_action,
 		}
 
 		/* TODO: I have no clue why this works (or why it doesn't work
-		   	 without the division. */
+		   	 without the division). */
 		*real_time = (*real_time) + (out_action->offset / 4);
 		out_action->time = *real_time;
 

@@ -60,4 +60,6 @@ int decompress_basic(BYTE *in_data, size_t in_len, BYTE **out_data,
 int parse_replay(FILE *file, struct replay_meta *meta,
 	struct replay_action **actions, size_t *actions_len);
 
+void free_replay_meta(struct replay_meta *meta);
+
 #endif /* MIMIC_H */
