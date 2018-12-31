@@ -31,11 +31,15 @@ int main(int argc, char *argv[])
 
 	for (size_t i = 0; i < actions_len / 100; i++) {
 		struct replay_action *a = actions + i;
-		printf("time: %d (offset: %ld), x/y: %f/%f, keys: %d\n", a->time, 
+		printf("time: %ld (offset: %ld), x/y: %f/%f, keys: %d\n", a->time, 
 			a->offset, a->x_coord, a->y_coord, a->keys);
 	}
 
 	fclose(stream);
+
+	/* Cleanup before exit */
+	free(actions);
+	free_replay_meta(&replay_meta);
 
 	return 0;
 }
