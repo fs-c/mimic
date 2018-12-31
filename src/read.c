@@ -2,8 +2,8 @@
 
 #define sread(dest, size, count)					\
 	rd = fread(dest, size, count, stream);				\
-	if (rd != count)						\
-		debug("fread failed (%d, %d)", (int)rd, (int)count);	\
+	if (rd != count) {						\
+		debug("fread failed (%d, %d)", (int)rd, (int)count); }	\
 
 #define type_read(type)			\
 	type val;			\
