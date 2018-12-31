@@ -151,7 +151,9 @@ static int parse_action(char *segment, struct replay_action *out_action,
 			break;
 		}
 
-		*real_time = (*real_time) + out_action->offset;
+		/* TODO: I have no clue why this works (or why it doesn't work
+		   	 without the division. */
+		*real_time = (*real_time) + (out_action->offset / 4);
 		out_action->time = *real_time;
 
 		item = __strtok_r(NULL, "|", &safe);
