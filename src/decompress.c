@@ -33,13 +33,15 @@ int decompress_basic(BYTE *in_data, size_t in_len, BYTE **out_data,
 
 	rc = elzma_decompress_run(hand, input_callback, (void *)&ds,
 		output_callback, (void *)&ds, ELZMA_lzma);
+	
+	elzma_decompress_free(&hand);	
 
 	if (rc != ELZMA_E_OK) {
 		debug("elzma_decompress_run error: %d", rc);
 
 		if (ds.out_data != NULL)
 			free(ds.out_data);
-		elzma_decompress_free(&hand);
+
 		return rc;
 	}
 
