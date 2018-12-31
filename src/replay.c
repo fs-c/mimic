@@ -1,9 +1,9 @@
 #include "mimic.h"
 
 #define sfree(pointer)					\
-	if (pointer)					\
+	if (pointer) {					\
 		free(pointer);				\
-	else debug("tried freeing null pointer");	\
+	} else { debug("tried freeing null pointer"); }	\
 
 struct replay_raw {
 	BYTE *data;
@@ -74,7 +74,6 @@ int parse_replay(FILE *file, struct replay_meta *meta,
 	int decomp_fail = decompress_basic(comp, comp_len, &raw.data,
 		&raw.data_len);
 	
-	/* Free this stuff ASAP */
 	free(comp);
 
 	if (decomp_fail) {
@@ -91,6 +90,8 @@ int parse_replay(FILE *file, struct replay_meta *meta,
 	if (parse_raw(raw.data, raw.data_len, actions, actions_len)) {
 		debug("raw data parsing failed");
 	}
+
+	free(raw.data);
 
 	return 0;
 }
