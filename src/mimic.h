@@ -6,6 +6,16 @@
 #include <string.h>
 #include <inttypes.h>
 
+#ifdef _WIN32
+  #define ON_WINDOWS
+
+  #include "windows.h"
+#endif /* _WIN32 */
+
+#ifdef __linux__
+  #define ON_LINUX
+#endif /* __linux__ */
+
 #ifdef DEBUG
 
   #define debug(...)\
